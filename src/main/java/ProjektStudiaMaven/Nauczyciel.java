@@ -3,11 +3,14 @@ package ProjektStudiaMaven;
 import java.util.ArrayList;
 
 public class Nauczyciel extends Osoba {
-    private ArrayList<Przedmiot> nauczanePrzedmioty;
+    private transient ArrayList<Przedmiot> nauczanePrzedmioty = new ArrayList<>();
 
     public Nauczyciel(String imie, String nazwisko) {
         super(imie, nazwisko);
-        this.nauczanePrzedmioty = new ArrayList<>();
+    }
+
+    public void setNauczanePrzedmioty(ArrayList<Przedmiot> nauczanePrzedmioty) {
+        this.nauczanePrzedmioty = nauczanePrzedmioty;
     }
 
     public ArrayList<Przedmiot> getNauczanePrzedmioty() {

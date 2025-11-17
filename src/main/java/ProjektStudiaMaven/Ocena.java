@@ -1,10 +1,10 @@
 package ProjektStudiaMaven;
 
 public class Ocena {
-    private Przedmiot przedmiot;
-    private Student student;
-    private int wartosc;
-    private int waga;
+    private final Przedmiot przedmiot;
+    private final transient Student student;
+    private final int wartosc;
+    private final int waga;
 
     public Ocena(Przedmiot przedmiot, Student student, int wartosc, int waga) {
         this.przedmiot = przedmiot;
@@ -42,5 +42,9 @@ public class Ocena {
     @Override
     public String toString() {
         return "{" + przedmiot + ", " + wartosc + " waga: " + waga + "}";
+    }
+
+    public Student getStudent() {
+        return student;
     }
 }

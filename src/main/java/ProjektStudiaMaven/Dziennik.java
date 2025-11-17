@@ -1,13 +1,19 @@
 package ProjektStudiaMaven;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Dziennik {
-    private ArrayList<Student> studenci;
-    private ArrayList<Nauczyciel> nauczyciele;
-    private ArrayList<Przedmiot> przedmioty;
+    private final ArrayList<Student> studenci;
+    private final ArrayList<Nauczyciel> nauczyciele;
+    private final ArrayList<Przedmiot> przedmioty;
 
     public Dziennik() {
         this.studenci = new ArrayList<>();
@@ -27,10 +33,9 @@ public class Dziennik {
         this.przedmioty.add(przedmiot);
     }
 
-    Scanner scanner = new Scanner(System.in);
+    private transient Scanner scanner;
 
     public void start() {
-        inicjalizujDaneTestowe();
         boolean uruchomiony = true;
         while (uruchomiony) {
             String user = logowanie();
@@ -97,10 +102,159 @@ public class Dziennik {
                         }
                     }
                     break;
+                case "Admin":
+                    System.out.println("Zalogowano jako: Admin");
+                    boolean uruchomionyAdmin = true;
+                    while (uruchomionyAdmin) {
+                        wyswietlMenuAdmina();
+                        int input = pobierzLiczbeZZakresu(0, 10);
+                        switch (input) {
+                            case 1:
+                                System.out.println("Podaj imie nauczyciela.");
+                                String noweImie = scanner.nextLine();
+                                System.out.println("Podaj nazwisko nauczyciela.");
+                                String noweNazwisko = scanner.nextLine();
+                                Nauczyciel nowyNauczyciel = new Nauczyciel(noweImie, noweNazwisko);
+                                nauczyciele.add(nowyNauczyciel);
+                                System.out.println("Dostepni nauczyciele po dodaniu " + nowyNauczyciel);
+                                System.out.println(nauczyciele);
+                                break;
+                            case 2:
+                                if (nauczyciele.isEmpty()) {
+                                    System.out.println("Brak nauczycieli w dzienniku.");
+                                    break;
+                                } else if (przedmioty.isEmpty()) {
+                                    System.out.println("Brak przedmiotow w dzienniku.");
+                                    break;
+                                }
+
+                                System.out.println("Dostepni nauczyciele:");
+                                int case2i = 1;
+                                for (Nauczyciel n : nauczyciele) {
+                                    System.out.println(case2i + ". " + n);
+                                    case2i++;
+                                }
+                                int case2Wybor = pobierzLiczbeZZakresu(1, nauczyciele.size());
+                                Nauczyciel case2Nauczyciel = nauczyciele.get(case2Wybor - 1);
+
+                                System.out.println("Dostepne przedmioty do przydzielenia:");
+                                case2i = 1;
+                                for (Przedmiot p : przedmioty) {
+                                    System.out.println(case2i + ". " + p);
+                                    case2i++;
+                                }
+                                case2Wybor = pobierzLiczbeZZakresu(1, przedmioty.size());
+                                Przedmiot case2Przedmiot = przedmioty.get(case2Wybor - 1);
+
+                                case2Nauczyciel.uczPrzedmiotu(case2Przedmiot);
+
+                                System.out.println("Nauczyciel " + case2Nauczyciel + " od teraz uczy " + case2Przedmiot + ".");
+
+                                break;
+                            case 3:
+                                if (nauczyciele.isEmpty()) {
+                                    System.out.println("Brak nauczycieli w dzienniku.");
+                                    break;
+                                }
+
+                                System.out.println("Dostepni nauczyciele:");
+                                int case3i = 1;
+                                for (Nauczyciel n : nauczyciele) {
+                                    System.out.println(case3i + ". " + n);
+                                    case3i++;
+                                }
+                                int case3Wybor = pobierzLiczbeZZakresu(1, nauczyciele.size());
+                                Nauczyciel case3Nauczyciel = nauczyciele.get(case3Wybor - 1);
+                                if (case3Nauczyciel.getNauczanePrzedmioty().isEmpty()) {
+                                    System.out.println("Wybrany nauczyciel nie uczy zadnego przedmiotu.");
+                                    break;
+                                }
+                                System.out.println("Ktorego przedmiotu ma juz nie uczyc?");
+                                case3i = 1;
+                                for (Przedmiot p : case3Nauczyciel.getNauczanePrzedmioty()) {
+                                    System.out.println(case3i + ". " + p);
+                                    case3i++;
+                                }
+                                case3Wybor = pobierzLiczbeZZakresu(1, case3Nauczyciel.getNauczanePrzedmioty().size());
+
+
+                                //do zrobienia arraylist nauczycieli w przedmiocie i usuwanie przedmiotu.
+
+
+                                break;
+                        }
+                        break;
+                    }
+                    break;
+                case "Zapisz":
+                    zapiszDoJson("dziennik.json");
+                    break;
                 case "Wyjscie":
                     uruchomiony = false;
                     break;
+
             }
+        }
+    }
+
+
+    public void inicjalizujScanner() {
+        if (this.scanner == null) {
+            this.scanner = new Scanner(System.in);
+        }
+    }
+
+    public void odtworzPowiazania() {
+        if (this.przedmioty == null || this.nauczyciele == null) {
+            return;
+        }
+
+
+        for (Nauczyciel n : this.nauczyciele) {
+            if (n.getNauczanePrzedmioty() == null) {
+                n.setNauczanePrzedmioty(new ArrayList<>());
+            }
+            n.getNauczanePrzedmioty().clear();
+        }
+
+        for (Przedmiot p : this.przedmioty) {
+            Nauczyciel nauczycielPrzedmiotu = p.getNauczyciel();
+
+            if (nauczycielPrzedmiotu != null) {
+                // ---- DODATKOWE ZABEZPIECZENIE ----
+                // Sprawdź, czy lista tego nauczyciela (z przedmiotu) jest zainicjalizowana
+                if (nauczycielPrzedmiotu.getNauczanePrzedmioty() == null) {
+                    nauczycielPrzedmiotu.setNauczanePrzedmioty(new ArrayList<>());
+                }
+
+                // Teraz wywołanie jest bezpieczne
+                nauczycielPrzedmiotu.uczPrzedmiotu(p);
+            }
+        }
+        System.out.println("Odtworzono powiazania miedzy nauczycielami a przedmiotami.");
+    }
+
+    public static Dziennik wczytajZJson(String sciezkaDoPliku) {
+        Gson gson = new Gson();
+        Dziennik dziennik = null;
+
+        try (FileReader reader = new FileReader(sciezkaDoPliku)) {
+            dziennik = gson.fromJson(reader, Dziennik.class);
+            System.out.println("Wczytano stan dziennika z pliku: " + sciezkaDoPliku);
+        } catch (IOException e) {
+            System.err.println("Blad podczas wczytywania pliku JSON: " + e.getMessage());
+        }
+        return dziennik;
+    }
+
+    public void zapiszDoJson(String sciezkaDoPliku) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        try (FileWriter writer = new FileWriter(sciezkaDoPliku)) {
+            gson.toJson(this, writer);
+            System.out.println("Zapisano stan dziennika do pliku: " + sciezkaDoPliku);
+        } catch (IOException e) {
+            System.err.println("Blad podczas zapisu do pliku JSON: " + e.getMessage());
         }
     }
 
@@ -275,12 +429,14 @@ public class Dziennik {
 
     private String logowanie() {
         String input = "null";
-        System.out.println("Kto sie loguje? \"Uczen\" czy \"Nauczyciel\"? Jesli chcesz wyjsc wpisz \"Wyjscie\"");
+        System.out.println("Kto sie loguje? \"Uczen\", \"Nauczyciel\" czy \"Admin\"? Jesli chcesz zapisac dane wpisz \"Zapisz\". Jesli chcesz wyjsc wpisz \"Wyjscie\"");
         while (true) {
             input = scanner.nextLine();
             if (input.equalsIgnoreCase("Uczen")
                     || input.equalsIgnoreCase("Nauczyciel")
-                    || input.equalsIgnoreCase("Wyjscie")) {
+                    || input.equalsIgnoreCase("Admin")
+                    || input.equalsIgnoreCase("Wyjscie")
+                    || input.equalsIgnoreCase("Zapisz")) {
                 break;
             }
             System.out.println("Podaj prawidlowa komende.");
@@ -288,7 +444,7 @@ public class Dziennik {
         return input;
     }
 
-    private void inicjalizujDaneTestowe() {
+    public void inicjalizujDaneTestowe() {
         System.out.println("Ladowanie danych testowych...");
 
         // --- Nauczyciele ---
@@ -342,5 +498,19 @@ public class Dziennik {
 
         System.out.println("Dane zaladowane pomyslnie!");
         System.out.println("--- --- --- --- --- --- --- ---");
+    }
+
+    private void wyswietlMenuAdmina() {
+        System.out.println("Co chcesz zrobic?");
+        System.out.println("1. Dodaj nowego nauczyciela.");
+        System.out.println("2. Przydziel nauczycielowi przedmiot.");
+        System.out.println("3. Zabierz przydzial przedmiotu nauczycielowi.");
+        System.out.println("4. Usun nauczyciela.");
+        System.out.println("5. Dodaj nowego ucznia.");
+        System.out.println("6. Usun ucznia.");
+        System.out.println("7. Dodaj nowa ocene.");
+        System.out.println("8. Usun ocene.");
+        System.out.println("9. Dodaj przedmiot.");
+        System.out.println("10. Usun przedmiot.");
     }
 }

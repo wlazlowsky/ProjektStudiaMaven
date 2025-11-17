@@ -1,8 +1,8 @@
 package ProjektStudiaMaven;
 
 public class Przedmiot {
-    private String nazwa;
-    private Nauczyciel nauczyciel;
+    private final String nazwa;
+    private final Nauczyciel nauczyciel;
 
     public Przedmiot(String nazwa, Nauczyciel nauczyciel) {
         this.nazwa = nazwa;
@@ -17,5 +17,9 @@ public class Przedmiot {
     @Override
     public String toString() {
         return nazwa;
+    }
+
+    public Nauczyciel getNauczyciel() {
+        return nauczyciel;
     }
 }
