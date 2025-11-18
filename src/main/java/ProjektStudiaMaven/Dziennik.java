@@ -43,24 +43,32 @@ public class Dziennik {
                 case "Student" -> {
                     if (studenci.isEmpty()) {
                         System.out.println("Brak studentow w dzienniku.");
+                        czekajNaEnter();
                         break;
                     }
                     Student zalogowanyStudent = wybierzStudenta();
                     if (zalogowanyStudent == null) break;
                     System.out.println("Zalogowano jako " + zalogowanyStudent);
+                    czekajNaEnter();
                     boolean uruchomionyStudent = true;
                     while (uruchomionyStudent) {
                         wyswietlMenuStudenta();
                         int input = pobierzLiczbeZZakresu(0, 3);
                         switch (input) {
-                            case 1 -> System.out.println(zalogowanyStudent.getListaOcen());
+                            case 1 -> {
+                                System.out.println(zalogowanyStudent.getListaOcen());
+                                czekajNaEnter();
+                            }
+
                             case 2 -> {
                                 Przedmiot p2 = wybierzPrzedmiotStudenta(zalogowanyStudent);
                                 if (p2 != null) getListaOcenPrzedmiot(zalogowanyStudent, p2);
+                                czekajNaEnter();
                             }
                             case 3 -> {
                                 Przedmiot p3 = wybierzPrzedmiotStudenta(zalogowanyStudent);
                                 if (p3 != null) System.out.println("Srednia: " + zalogowanyStudent.obliczSrednia(p3));
+                                czekajNaEnter();
                             }
                             case 0 -> uruchomionyStudent = false;
                         }
@@ -69,10 +77,13 @@ public class Dziennik {
                 case "Nauczyciel" -> {
                     if (nauczyciele.isEmpty()) {
                         System.out.println("Brak nauczycieli w dzienniku.");
+                        czekajNaEnter();
                         break;
                     }
                     Nauczyciel zalogowanyNauczyciel = wybierzNauczyciela();
+                    if(zalogowanyNauczyciel == null) break;
                     System.out.println("Zalogowano jako: " + zalogowanyNauczyciel);
+                    czekajNaEnter();
                     boolean uruchomionyNauczyciel = true;
                     while (uruchomionyNauczyciel) {
                         wyswietlMenuNauczyciela();
@@ -81,13 +92,16 @@ public class Dziennik {
                             case 1 -> {
                                 if (zalogowanyNauczyciel.getNauczanePrzedmioty().isEmpty()) {
                                     System.out.println("Brak nauczanych przedmiotow.");
+                                    czekajNaEnter();
                                     break;
                                 }
                                 System.out.println(zalogowanyNauczyciel.getNauczanePrzedmioty());
+                                czekajNaEnter();
                             }
                             case 2 -> {
                                 if (studenci.isEmpty()) {
                                     System.out.println("Brak studentow w dzienniku.");
+                                    czekajNaEnter();
                                     break;
                                 }
                                 System.out.println("Ktoremu studentowi chcesz wystawic ocene?");
@@ -95,6 +109,7 @@ public class Dziennik {
                                 if (wybranyStudent == null) break;
                                 if (zalogowanyNauczyciel.getNauczanePrzedmioty().isEmpty()) {
                                     System.out.println("Brak nauczanych przedmiotow.");
+                                    czekajNaEnter();
                                     break;
                                 }
                                 Przedmiot wybranyPrzedmiot = wybierzPrzedmiot(zalogowanyNauczyciel);
@@ -110,6 +125,7 @@ public class Dziennik {
                             case 3 -> {
                                 if (studenci.isEmpty()) {
                                     System.out.println("Brak studentow w dzienniku.");
+                                    czekajNaEnter();
                                     break;
                                 }
                                 System.out.println("Ktoremu studentowi chcesz usunac ocene?");
@@ -127,6 +143,7 @@ public class Dziennik {
                 }
                 case "Admin" -> {
                     System.out.println("Zalogowano jako: Admin");
+                    czekajNaEnter();
                     boolean uruchomionyAdmin = true;
                     while (uruchomionyAdmin) {
                         wyswietlMenuAdmina();
@@ -141,10 +158,12 @@ public class Dziennik {
                                 nauczyciele.add(nowyNauczyciel);
                                 System.out.println("Dostepni nauczyciele po dodaniu " + nowyNauczyciel);
                                 System.out.println(nauczyciele);
+                                czekajNaEnter();
                             }
                             case 2 -> {
                                 if (przedmioty.isEmpty()) {
                                     System.out.println("Brak przedmiotow w dzienniku.");
+                                    czekajNaEnter();
                                     break;
                                 }
                                 Nauczyciel case2Nauczyciel = wybierzNauczyciela();
@@ -157,6 +176,7 @@ public class Dziennik {
                                 }
                                 case2Nauczyciel.uczPrzedmiotu(case2Przedmiot);
                                 System.out.println("Nauczyciel " + case2Nauczyciel + " od teraz uczy " + case2Przedmiot + ".");
+                                czekajNaEnter();
                             }
                             case 3 -> {
                                 Nauczyciel case3Nauczyciel = wybierzNauczyciela();
@@ -165,6 +185,7 @@ public class Dziennik {
                                 }
                                 if(case3Nauczyciel.getNauczanePrzedmioty().isEmpty()){
                                     System.out.println("Wybrany nauczyciel nie uczy zadnego przedmiotu.");
+                                    czekajNaEnter();
                                     break;
                                 }
                                 Przedmiot case3Przedmiot = wybierzPrzedmiot(case3Nauczyciel);
@@ -174,6 +195,7 @@ public class Dziennik {
                                 case3Nauczyciel.nieUczPrzedmiotu(case3Przedmiot);
                                 System.out.println("Zaktualizowane nauczane przedmioty przez " + case3Nauczyciel + ":");
                                 System.out.println(case3Nauczyciel.getNauczanePrzedmioty());
+                                czekajNaEnter();
                             }
                             case 4 -> {
                                 Nauczyciel case4Nauczyciel = wybierzNauczyciela();
@@ -182,6 +204,7 @@ public class Dziennik {
                                 }
                                 nauczyciele.remove(case4Nauczyciel);
                                 System.out.println("Zaktualizowana lista nauczycieli: " + nauczyciele);
+                                czekajNaEnter();
                             }
                             case 5 -> {
                                 System.out.println("Podaj imie studenta do dodania:");
@@ -191,10 +214,12 @@ public class Dziennik {
                                 studenci.add(new Student(case5Imie, case5Nazwisko));
                                 System.out.println("Lista studentow po dodaniu " + case5Imie + " " + case5Nazwisko);
                                 System.out.println(studenci);
+                                czekajNaEnter();
                             }
                             case 6 -> {
                                 if (studenci.isEmpty()) {
                                     System.out.println("Brak dostepnych studentow.");
+                                    czekajNaEnter();
                                     break;
                                 }
                                 Student case6Student = wybierzStudenta();
@@ -202,13 +227,16 @@ public class Dziennik {
                                 studenci.remove(case6Student);
                                 System.out.println("Zaktualizowana lista studentow:");
                                 System.out.println(studenci);
+                                czekajNaEnter();
                             }
                             case 7 -> {
                                 if (studenci.isEmpty()) {
                                     System.out.println("Brak studentow w dzienniku.");
+                                    czekajNaEnter();
                                     break;
                                 } else if (przedmioty.isEmpty()) {
                                     System.out.println("Brak przedmiotow w dzienniku.");
+                                    czekajNaEnter();
                                 }
                                 System.out.println("Z jakiego przedmiotu wstawic ocene?");
                                 Przedmiot case7Przedmiot = wybierzPrzedmiotWszystkie();
@@ -225,10 +253,12 @@ public class Dziennik {
                                 case7Student.addOcena(new Ocena(case7Przedmiot, case7Wartosc, case7Waga));
                                 System.out.println("Oceny studenta " + case7Student + " po wstawieniu oceny:");
                                 System.out.println(case7Student.wyswietlOceny());
+                                czekajNaEnter();
                             }
                             case 8 -> {
                                 if (studenci.isEmpty()) {
                                     System.out.println("Brak studentow w dzienniku.");
+                                    czekajNaEnter();
                                     break;
                                 }
                                 System.out.println("Ktoremu studentowi usunac ocene?");
@@ -236,9 +266,11 @@ public class Dziennik {
                                 if (case8Student == null) break;
                                 if (case8Student.getListaOcen().isEmpty()) {
                                     System.out.println("Wybrany student nie ma zadnych ocen.");
+                                    czekajNaEnter();
                                     break;
                                 }
                                 usuwanieOceny(case8Student);
+                                czekajNaEnter();
                             }
                             case 9 -> {
                                 System.out.println("Jaki przedmiot chcesz dodac?");
@@ -252,10 +284,12 @@ public class Dziennik {
                                 System.out.println("Lista przedmiotow po dodaniu:");
                                 przedmioty.add(case9Przedmiot);
                                 System.out.println(przedmioty);
+                                czekajNaEnter();
                             }
                             case 10 -> {
                                 if (przedmioty.isEmpty()) {
                                     System.out.println("Brak przedmiotow w dzienniku.");
+                                    czekajNaEnter();
                                     break;
                                 }
                                 System.out.println("Ktory przedmiot chcesz usunac?");
@@ -273,6 +307,7 @@ public class Dziennik {
                                 przedmioty.remove(case10Przedmiot);
                                 System.out.println("Lista przedmiotow po usunieciu:");
                                 System.out.println(przedmioty);
+                                czekajNaEnter();
                             }
                             case 0 -> uruchomionyAdmin = false;
                         }
@@ -281,6 +316,14 @@ public class Dziennik {
                 case "Zapisz" -> zapiszDoJson("dziennik.json");
                 case "Wyjscie" -> uruchomiony = false;
             }
+        }
+    }
+    private void czekajNaEnter() {
+        System.out.println("\nNacisnij ENTER, aby kontynuowac...");
+        try {
+            scanner.nextLine();
+        } catch (Exception e){
+
         }
     }
 
@@ -333,7 +376,7 @@ public class Dziennik {
             System.out.println(i + ". " + n);
             i++;
         }
-        int wybor = pobierzLiczbeZZakresu(1, nauczyciele.size());
+        int wybor = pobierzLiczbeZZakresu(0, nauczyciele.size());
         if (wybor == 0) return null;
 
         return nauczyciele.get(wybor - 1);
