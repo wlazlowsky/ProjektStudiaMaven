@@ -322,8 +322,8 @@ public class Dziennik {
         System.out.println("\nNacisnij ENTER, aby kontynuowac...");
         try {
             scanner.nextLine();
-        } catch (Exception e){
-
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
