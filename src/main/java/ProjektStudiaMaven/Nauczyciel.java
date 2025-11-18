@@ -18,11 +18,14 @@ public class Nauczyciel extends Osoba {
     }
 
     void wystawOcene(Przedmiot przedmiot, Student student, int wartosc, int waga) {
-        student.addOcena(new Ocena(przedmiot, student, wartosc, waga));
+        student.addOcena(new Ocena(przedmiot, wartosc, waga));
     }
 
     void uczPrzedmiotu(Przedmiot przedmiot) {
         nauczanePrzedmioty.add(przedmiot);
+    }
+    void nieUczPrzedmiotu(Przedmiot przedmiot) {
+        nauczanePrzedmioty.remove(przedmiot);
     }
 
     void usunOcene(Student student, int index) {

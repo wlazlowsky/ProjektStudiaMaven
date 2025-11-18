@@ -69,6 +69,13 @@
           },
           "wartosc": 3,
           "waga": 1
+        },
+        {
+          "przedmiot": {
+            "nazwa": "Matematyka"
+          },
+          "wartosc": 4,
+          "waga": 2
         }
       ],
       "imie": "Ewa",
@@ -92,11 +99,7 @@
       "nazwisko": "Adamski"
     },
     {
-      "nauczanePrzedmioty": [
-        {
-          "nazwa": "Matematyka"
-        }
-      ],
+      "nauczanePrzedmioty": [],
       "imie": "Marek",
       "nazwisko": "Markowski"
     }
