@@ -177,10 +177,6 @@ public class Dziennik {
                                 }
                                 case3Wybor = pobierzLiczbeZZakresu(1, case3Nauczyciel.getNauczanePrzedmioty().size());
 
-
-                                //do zrobienia arraylist nauczycieli w przedmiocie i usuwanie przedmiotu.
-
-
                                 break;
                         }
                         break;
@@ -205,35 +201,15 @@ public class Dziennik {
     }
 
     public void odtworzPowiazania() {
-        if (this.przedmioty == null || this.nauczyciele == null) {
-            return;
-        }
-
+        if (this.nauczyciele == null) return;
 
         for (Nauczyciel n : this.nauczyciele) {
             if (n.getNauczanePrzedmioty() == null) {
                 n.setNauczanePrzedmioty(new ArrayList<>());
             }
-            n.getNauczanePrzedmioty().clear();
         }
-
-        for (Przedmiot p : this.przedmioty) {
-            Nauczyciel nauczycielPrzedmiotu = p.getNauczyciel();
-
-            if (nauczycielPrzedmiotu != null) {
-                // ---- DODATKOWE ZABEZPIECZENIE ----
-                // Sprawdź, czy lista tego nauczyciela (z przedmiotu) jest zainicjalizowana
-                if (nauczycielPrzedmiotu.getNauczanePrzedmioty() == null) {
-                    nauczycielPrzedmiotu.setNauczanePrzedmioty(new ArrayList<>());
-                }
-
-                // Teraz wywołanie jest bezpieczne
-                nauczycielPrzedmiotu.uczPrzedmiotu(p);
-            }
-        }
-        System.out.println("Odtworzono powiazania miedzy nauczycielami a przedmiotami.");
+        System.out.println("Sprawdzono spojnosc danych nauczycieli.");
     }
-
     public static Dziennik wczytajZJson(String sciezkaDoPliku) {
         Gson gson = new Gson();
         Dziennik dziennik = null;
@@ -470,14 +446,19 @@ public class Dziennik {
         // --- Przedmioty ---
         // Tworzymy przedmioty, od razu przypisując nauczycieli
         // (Konstruktor Przedmiotu sam doda przedmiot do listy nauczyciela)
-        Przedmiot matma = new Przedmiot("Matematyka", nKowalski);
-        Przedmiot polski = new Przedmiot("Jezyk Polski", nNowak);
-        Przedmiot angielski = new Przedmiot("Jezyk Angielski", nNowak);
+        Przedmiot matma = new Przedmiot("Matematyka");
+        Przedmiot polski = new Przedmiot("Jezyk Polski");
+        Przedmiot angielski = new Przedmiot("Jezyk Angielski");
 
         // Dodajemy je do głównej listy dziennika
         dodajPrzedmiot(matma);
         dodajPrzedmiot(polski);
         dodajPrzedmiot(angielski);
+
+        // ZMIANA: Ręcznie przypisujemy przedmioty nauczycielom
+        nKowalski.uczPrzedmiotu(matma);
+        nNowak.uczPrzedmiotu(polski);
+        nNowak.uczPrzedmiotu(angielski);
 
         // --- Oceny ---
         // Nauczyciele wystawiają oceny studentom z konkretnych przedmiotów

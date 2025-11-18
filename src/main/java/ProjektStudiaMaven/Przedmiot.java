@@ -1,13 +1,12 @@
 package ProjektStudiaMaven;
 
+import java.util.Objects;
+
 public class Przedmiot {
     private final String nazwa;
-    private final Nauczyciel nauczyciel;
 
-    public Przedmiot(String nazwa, Nauczyciel nauczyciel) {
+    public Przedmiot(String nazwa) {
         this.nazwa = nazwa;
-        this.nauczyciel = nauczyciel;
-        nauczyciel.uczPrzedmiotu(this);
     }
 
     public String getNazwa() {
@@ -19,7 +18,16 @@ public class Przedmiot {
         return nazwa;
     }
 
-    public Nauczyciel getNauczyciel() {
-        return nauczyciel;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Przedmiot przedmiot = (Przedmiot) o;
+        return Objects.equals(nazwa, przedmiot.nazwa);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nazwa);
     }
 }

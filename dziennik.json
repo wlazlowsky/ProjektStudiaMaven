@@ -4,33 +4,21 @@
       "listaOcen": [
         {
           "przedmiot": {
-            "nazwa": "Matematyka",
-            "nauczyciel": {
-              "imie": "Jan",
-              "nazwisko": "Kowalski"
-            }
+            "nazwa": "Matematyka"
           },
           "wartosc": 5,
           "waga": 3
         },
         {
           "przedmiot": {
-            "nazwa": "Matematyka",
-            "nauczyciel": {
-              "imie": "Jan",
-              "nazwisko": "Kowalski"
-            }
+            "nazwa": "Matematyka"
           },
           "wartosc": 4,
           "waga": 1
         },
         {
           "przedmiot": {
-            "nazwa": "Jezyk Polski",
-            "nauczyciel": {
-              "imie": "Maria",
-              "nazwisko": "Nowak"
-            }
+            "nazwa": "Jezyk Polski"
           },
           "wartosc": 6,
           "waga": 2
@@ -43,33 +31,21 @@
       "listaOcen": [
         {
           "przedmiot": {
-            "nazwa": "Matematyka",
-            "nauczyciel": {
-              "imie": "Jan",
-              "nazwisko": "Kowalski"
-            }
+            "nazwa": "Matematyka"
           },
           "wartosc": 3,
           "waga": 3
         },
         {
           "przedmiot": {
-            "nazwa": "Jezyk Angielski",
-            "nauczyciel": {
-              "imie": "Maria",
-              "nazwisko": "Nowak"
-            }
+            "nazwa": "Jezyk Angielski"
           },
           "wartosc": 5,
           "waga": 1
         },
         {
           "przedmiot": {
-            "nazwa": "Jezyk Angielski",
-            "nauczyciel": {
-              "imie": "Maria",
-              "nazwisko": "Nowak"
-            }
+            "nazwa": "Jezyk Angielski"
           },
           "wartosc": 2,
           "waga": 1
@@ -82,22 +58,14 @@
       "listaOcen": [
         {
           "przedmiot": {
-            "nazwa": "Jezyk Polski",
-            "nauczyciel": {
-              "imie": "Maria",
-              "nazwisko": "Nowak"
-            }
+            "nazwa": "Jezyk Polski"
           },
           "wartosc": 4,
           "waga": 2
         },
         {
           "przedmiot": {
-            "nazwa": "Jezyk Angielski",
-            "nauczyciel": {
-              "imie": "Maria",
-              "nazwisko": "Nowak"
-            }
+            "nazwa": "Jezyk Angielski"
           },
           "wartosc": 3,
           "waga": 1
@@ -109,39 +77,39 @@
   ],
   "nauczyciele": [
     {
+      "nauczanePrzedmioty": [],
       "imie": "Jan",
       "nazwisko": "Kowalski"
     },
     {
+      "nauczanePrzedmioty": [],
       "imie": "Maria",
       "nazwisko": "Nowak"
     },
     {
+      "nauczanePrzedmioty": [],
       "imie": "Adam",
       "nazwisko": "Adamski"
+    },
+    {
+      "nauczanePrzedmioty": [
+        {
+          "nazwa": "Matematyka"
+        }
+      ],
+      "imie": "Marek",
+      "nazwisko": "Markowski"
     }
   ],
   "przedmioty": [
     {
-      "nazwa": "Matematyka",
-      "nauczyciel": {
-        "imie": "Jan",
-        "nazwisko": "Kowalski"
-      }
+      "nazwa": "Matematyka"
     },
     {
-      "nazwa": "Jezyk Polski",
-      "nauczyciel": {
-        "imie": "Maria",
-        "nazwisko": "Nowak"
-      }
+      "nazwa": "Jezyk Polski"
     },
     {
-      "nazwa": "Jezyk Angielski",
-      "nauczyciel": {
-        "imie": "Maria",
-        "nazwisko": "Nowak"
-      }
+      "nazwa": "Jezyk Angielski"
     }
   ]
 }
