@@ -12,7 +12,8 @@ public class NauczycielTest {
         Przedmiot p = new Przedmiot("Matematyka");
 
         n.wystawOcene(p, s, 3, 2);
+        n.wystawOcene(p, s, 3, 2);
 
-        assertEquals(1, s.getListaOcen().size());
+        assertEquals(2, s.getListaOcen().size());
     }
 }
