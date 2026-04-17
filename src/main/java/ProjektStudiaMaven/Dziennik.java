@@ -1,5 +1,6 @@
 package ProjektStudiaMaven;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Dziennik {
@@ -43,7 +44,7 @@ public class Dziennik {
                     boolean uruchomionyStudent = true;
                     while (uruchomionyStudent) {
                         ui.wyswietlMenuStudenta();
-                        int input = ui.pobierzLiczbeZZakresu(0, 3);
+                        int input = ui.pobierzLiczbeZZakresu(0, 4);
                         switch (input) {
                             case 1 -> {
                                 System.out.println(zalogowanyStudent.getListaOcen());
@@ -60,6 +61,21 @@ public class Dziennik {
                                 if (p3 != null) System.out.println("Srednia: " + zalogowanyStudent.obliczSrednia(p3));
                                 ui.czekajNaEnter();
                             }
+                            case 4 -> {
+                                if (zalogowanyStudent.getListaOcen().isEmpty()) {
+                                    System.out.println("Nie posiadasz ocen z ktorych mozna wygenerowac raport.");
+                                } else {
+                                    File folderRaportow = new File("raporty");
+
+                                    if (!folderRaportow.exists()) {
+                                        folderRaportow.mkdir();
+                                    }
+
+                                    String nazwaRaportu = "raporty/Raport_" + zalogowanyStudent.getImie() + zalogowanyStudent.getNazwisko() + ".pdf";
+                                    GeneratorPdf.generujRaportStudenta(zalogowanyStudent, nazwaRaportu);
+                                }
+                                ui.czekajNaEnter();
+                            }
                             case 0 -> uruchomionyStudent = false;
                         }
                     }
@@ -71,7 +87,7 @@ public class Dziennik {
                         break;
                     }
                     Nauczyciel zalogowanyNauczyciel = wybierzNauczyciela(ui);
-                    if(zalogowanyNauczyciel == null) break;
+                    if (zalogowanyNauczyciel == null) break;
                     System.out.println("Zalogowano jako: " + zalogowanyNauczyciel);
                     ui.czekajNaEnter();
                     boolean uruchomionyNauczyciel = true;
@@ -173,7 +189,7 @@ public class Dziennik {
                                 if (case3Nauczyciel == null) {
                                     break;
                                 }
-                                if(case3Nauczyciel.getNauczanePrzedmioty().isEmpty()){
+                                if (case3Nauczyciel.getNauczanePrzedmioty().isEmpty()) {
                                     System.out.println("Wybrany nauczyciel nie uczy zadnego przedmiotu.");
                                     ui.czekajNaEnter();
                                     break;
@@ -303,7 +319,7 @@ public class Dziennik {
                         }
                     }
                 }
-                case "Zapisz" -> BazaDanych.zapiszDoJson(this,"dziennik.json");
+                case "Zapisz" -> BazaDanych.zapiszDoJson(this, "dziennik.json");
                 case "Wyjscie" -> uruchomiony = false;
             }
         }
@@ -452,12 +468,11 @@ public class Dziennik {
             System.out.println((i + 1) + ". " + studenci.get(i));
         }
         int wybor = ui.pobierzLiczbeZZakresu(1, studenci.size());
-        if (wybor==0){
+        if (wybor == 0) {
             return null;
         }
-        return studenci.get(wybor-1);
+        return studenci.get(wybor - 1);
     }
-
 
 
     public void inicjalizujDaneTestowe() {

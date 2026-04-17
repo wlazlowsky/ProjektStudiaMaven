@@ -56,6 +56,7 @@ public class InterfejsKonsolowy {
         System.out.println("1. Wyswietl wszystkie swoje oceny.");
         System.out.println("2. Wyswietl swoje oceny z danego przedmiotu.");
         System.out.println("3. Oblicz srednia wazona z danego przedmiotu.");
+        System.out.println("4. Wygeneruj raport ocen do pliku PDF.");
     }
 
     void wyswietlMenuAdmina() {
