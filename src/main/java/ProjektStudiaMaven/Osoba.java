@@ -1,6 +1,16 @@
 package ProjektStudiaMaven;
 
 public abstract class Osoba {
+    protected int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     protected String imie;
     protected String nazwisko;
 

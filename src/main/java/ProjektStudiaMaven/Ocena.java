@@ -1,6 +1,16 @@
 package ProjektStudiaMaven;
 
 public class Ocena {
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private final Przedmiot przedmiot;
     private final int wartosc;
     private final int waga;

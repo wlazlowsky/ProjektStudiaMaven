@@ -126,7 +126,9 @@ public class Dziennik {
                                 System.out.println("Podaj wage oceny.");
                                 int wagaDoWstawienia = ui.pobierzLiczbeZZakresu(1, 5);
                                 if (wagaDoWstawienia == 0) break;
-                                wybranyStudent.addOcena(new Ocena(wybranyPrzedmiot, ocenaDoWstawienia, wagaDoWstawienia));
+                                Ocena doWstawienia = new Ocena(wybranyPrzedmiot, ocenaDoWstawienia, wagaDoWstawienia);
+                                wybranyStudent.addOcena(doWstawienia);
+                                BazaDanych.dodajOceneDoBazy(wybranyStudent, doWstawienia);
                             }
                             case 3 -> {
                                 if (studenci.isEmpty()) {
@@ -160,10 +162,15 @@ public class Dziennik {
                                 String noweImie = ui.pobierzTekst();
                                 System.out.println("Podaj nazwisko nauczyciela.");
                                 String noweNazwisko = ui.pobierzTekst();
+
                                 Nauczyciel nowyNauczyciel = new Nauczyciel(noweImie, noweNazwisko);
+
                                 nauczyciele.add(nowyNauczyciel);
-                                System.out.println("Dostepni nauczyciele po dodaniu " + nowyNauczyciel);
+                                BazaDanych.dodajNauczycielaDoBazy(nowyNauczyciel);
+
+                                System.out.println("Lista nauczycieli po dodaniu:");
                                 System.out.println(nauczyciele);
+
                                 ui.czekajNaEnter();
                             }
                             case 2 -> {
@@ -181,6 +188,7 @@ public class Dziennik {
                                     break;
                                 }
                                 case2Nauczyciel.uczPrzedmiotu(case2Przedmiot);
+                                BazaDanych.przypiszPrzedmiotNauczycielowi(case2Nauczyciel, case2Przedmiot);
                                 System.out.println("Nauczyciel " + case2Nauczyciel + " od teraz uczy " + case2Przedmiot + ".");
                                 ui.czekajNaEnter();
                             }
@@ -217,9 +225,15 @@ public class Dziennik {
                                 String case5Imie = ui.pobierzTekst();
                                 System.out.println("Podaj nazwisko studenta do dodania:");
                                 String case5Nazwisko = ui.pobierzTekst();
-                                studenci.add(new Student(case5Imie, case5Nazwisko));
-                                System.out.println("Lista studentow po dodaniu " + case5Imie + " " + case5Nazwisko);
+
+                                Student nowyStudent = new Student(case5Imie, case5Nazwisko);
+
+                                studenci.add(nowyStudent);
+                                BazaDanych.dodajStudentaDoBazy(nowyStudent);
+
+                                System.out.println("Lista studentow po dodaniu:");
                                 System.out.println(studenci);
+
                                 ui.czekajNaEnter();
                             }
                             case 6 -> {
@@ -256,7 +270,9 @@ public class Dziennik {
                                 System.out.println("Jaka ma byc waga?");
                                 int case7Waga = ui.pobierzLiczbeZZakresu(1, 5);
                                 if (case7Waga == 0) break;
-                                case7Student.addOcena(new Ocena(case7Przedmiot, case7Wartosc, case7Waga));
+                                Ocena nowaOcena = new Ocena(case7Przedmiot, case7Wartosc, case7Waga);
+                                case7Student.addOcena(nowaOcena);
+                                BazaDanych.dodajOceneDoBazy(case7Student, nowaOcena);
                                 System.out.println("Oceny studenta " + case7Student + " po wstawieniu oceny:");
                                 System.out.println(case7Student.wyswietlOceny());
                                 ui.czekajNaEnter();
@@ -289,6 +305,7 @@ public class Dziennik {
                                 System.out.println(przedmioty);
                                 System.out.println("Lista przedmiotow po dodaniu:");
                                 przedmioty.add(case9Przedmiot);
+                                BazaDanych.dodajPrzedmiotDoBazy(case9Przedmiot);
                                 System.out.println(przedmioty);
                                 ui.czekajNaEnter();
                             }
@@ -319,7 +336,7 @@ public class Dziennik {
                         }
                     }
                 }
-                case "Zapisz" -> BazaDanych.zapiszDoJson(this, "dziennik.json");
+//                case "Zapisz" -> BazaDanych.zapiszDoJson(this, "dziennik.json");
                 case "Wyjscie" -> uruchomiony = false;
             }
         }
@@ -474,65 +491,28 @@ public class Dziennik {
         return studenci.get(wybor - 1);
     }
 
-
-    public void inicjalizujDaneTestowe() {
-        System.out.println("Ladowanie danych testowych...");
-
-        // --- Nauczyciele ---
-        // Tworzymy nauczycieli
-        Nauczyciel nKowalski = new Nauczyciel("Jan", "Kowalski");
-        Nauczyciel nNowak = new Nauczyciel("Maria", "Nowak");
-
-        // Dodajemy ich do głównej listy dziennika
-        dodajNauczyciela(nKowalski);
-        dodajNauczyciela(nNowak);
-
-        // --- Studenci ---
-        // Tworzymy studentów
-        Student sZielinska = new Student("Anna", "Zielinska");
-        Student sWisniewski = new Student("Piotr", "Wisniewski");
-        Student sLis = new Student("Ewa", "Lis");
-
-        // Dodajemy ich do głównej listy dziennika
-        dodajStudenta(sZielinska);
-        dodajStudenta(sWisniewski);
-        dodajStudenta(sLis);
-
-        // --- Przedmioty ---
-        // Tworzymy przedmioty, od razu przypisując nauczycieli
-        // (Konstruktor Przedmiotu sam doda przedmiot do listy nauczyciela)
-        Przedmiot matma = new Przedmiot("Matematyka");
-        Przedmiot polski = new Przedmiot("Jezyk Polski");
-        Przedmiot angielski = new Przedmiot("Jezyk Angielski");
-
-        // Dodajemy je do głównej listy dziennika
-        dodajPrzedmiot(matma);
-        dodajPrzedmiot(polski);
-        dodajPrzedmiot(angielski);
-
-        // ZMIANA: Ręcznie przypisujemy przedmioty nauczycielom
-        nKowalski.uczPrzedmiotu(matma);
-        nNowak.uczPrzedmiotu(polski);
-        nNowak.uczPrzedmiotu(angielski);
-
-        // --- Oceny ---
-        // Nauczyciele wystawiają oceny studentom z konkretnych przedmiotów
-
-        // Oceny Anny Zielińskiej
-        nKowalski.wystawOcene(matma, sZielinska, 5, 3); // Matma, ocena 5, waga 3
-        nKowalski.wystawOcene(matma, sZielinska, 4, 1); // Matma, ocena 4, waga 1
-        nNowak.wystawOcene(polski, sZielinska, 6, 2); // Polski, ocena 6, waga 2
-
-        // Oceny Piotra Wiśniewskiego
-        nKowalski.wystawOcene(matma, sWisniewski, 3, 3); // Matma, ocena 3, waga 3
-        nNowak.wystawOcene(angielski, sWisniewski, 5, 1); // Angielski, ocena 5, waga 1
-        nNowak.wystawOcene(angielski, sWisniewski, 2, 1); // Angielski, ocena 2, waga 1
-
-        // Oceny Ewy Lis
-        nNowak.wystawOcene(polski, sLis, 4, 2); // Polski, ocena 4, waga 2
-        nNowak.wystawOcene(angielski, sLis, 3, 1); // Angielski, ocena 3, waga 1
-
-        System.out.println("Dane zaladowane pomyslnie!");
-        System.out.println("--- --- --- --- --- --- --- ---");
+    public Student getStudentById(int id){
+        for (Student s : studenci){
+            if (s.getId() == id){
+                return s;
+            }
+        }
+        return null;
+    }
+    public Nauczyciel getNauczycielById(int id){
+        for (Nauczyciel n : nauczyciele){
+            if (n.getId() == id){
+                return n;
+            }
+        }
+        return null;
+    }
+    public Przedmiot getPrzedmiotById(int id){
+        for (Przedmiot p : przedmioty){
+            if (p.getId() == id){
+                return p;
+            }
+        }
+        return null;
     }
 }

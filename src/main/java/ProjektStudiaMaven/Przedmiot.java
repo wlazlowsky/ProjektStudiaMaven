@@ -3,6 +3,16 @@ package ProjektStudiaMaven;
 import java.util.Objects;
 
 public class Przedmiot {
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private final String nazwa;
 
     public Przedmiot(String nazwa) {
