@@ -27,7 +27,7 @@ System opiera się na interaktywnym interfejsie konsolowym i posiada podział na
 
 1. Sklonuj repozytorium na swój komputer:
    ```bash
-   git clone [https://github.com/wlazlowsky/ProjektStudiaMaven](https://github.com/wlazlowsky/ProjektStudiaMaven)
+   git clone https://github.com/wlazlowsky/ProjektStudiaMaven
    ```
 2. Otwórz projekt w wybranym środowisku IDE (np. IntelliJ IDEA, Eclipse).
 
